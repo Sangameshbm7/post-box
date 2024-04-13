@@ -7,7 +7,7 @@
 <div>
   <ul>
     <li><%= link_to "Messages Dashboard", root_path, class: "nav-link" %></li>
-    <li><%= link_to "Post Message", new_message_path, class: "nav-link" %></li>
+    <li><%= link_to "Post Message", messages_path, class: "nav-link" %></li>
     <li><%= link_to "Friends", root_path, class: "nav-link" %></li> 
     <% if current_user %>
       <li><a href='#settings'>Submit a Ticket</a></li>

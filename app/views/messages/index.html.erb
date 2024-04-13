@@ -1,10 +1,10 @@
-<p style="color: green"><%= notice %></p>
+
 <h1>Post a Message</h1>
 <textarea id="message_content" placeholder="Type your message here..." rows="4"></textarea>
 <button id="post_message_button">Post Message</button>
 
 <h1>My Messages</h1>
-<table>
+<table id="messages_table">
   <thead>
     <tr>
       <th>Sl. No.</th>
@@ -14,10 +14,12 @@
   </thead>
   <tbody>
     <% @messages.each_with_index do |message, index| %>
-      <tr>
+      <tr id="message_<%= message.id %>">
         <td><%= index + 1 %></td>
         <td><%= message.content %></td>
-        <td><%= link_to "Show this message", message, class: "show-button" %></td>
+        <td>
+          <button class="delete-button" data-message-id="<%= message.id %>">Delete</button>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -33,12 +35,17 @@
   }
 
   .show-link {
-    margin-left: 10px; /* Add some spacing between the message and the link */
+    margin-right: 10px;
+  }
+
+  .delete-button {
+    margin-left: 10px;
   }
 </style>
 
 <script type="text/javascript">
   $(document).ready(function() {
+    // Post Message Button
     $('#post_message_button').click(function() {
       $.ajax({
         url: '/messages',
@@ -47,32 +54,55 @@
           'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
         },
         data: { message: { content: $('#message_content').val() } },
-        dataType: 'json', // Expect JSON response
+        dataType: 'json',
         success: function(response) {
-          // Handle the successful response
+          $('#message_content').val('');
           console.log(response);
-          // Append the new message to the table
           appendMessage(response);
         },
         error: function(xhr, status, error) {
-          // Handle errors
           console.error(xhr.responseText);
         }
       });
     });
 
-    // Function to append new message to the table
+    // Delete Button
+    $(document).on('click', '.delete-button', function() {
+      var messageId = $(this).data('message-id');
+      $.ajax({
+        url: '/messages/' + messageId,
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        dataType: 'json',
+        success: function(response) {
+          console.log(response);
+          removeMessage(messageId);
+        },
+        error: function(xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+      });
+    });
+
     function appendMessage(message) {
-      // Construct table row HTML for the new message
-      var newRow = '<tr>' +
-                   '<td>' + ($('table tbody tr').length + 1) + '</td>' +
+      var newRow = '<tr id="message_' + message.id + '">' +
+                   '<td>' + ($('#messages_table tbody tr').length + 1) + '</td>' +
                    '<td>' + message.content + '</td>' +
-                   '<td><a href="/messages/' + message.id + '" class="show-button">Show this message</a></td>' +
+                   '<td>' +
+                   '<button class="delete-button" data-message-id="' + message.id + '">Delete</button>' +
+                   '</td>' +
                    '</tr>';
-      
-      // Append the new row to the table body
-      $('table tbody').append(newRow);
+      $('#messages_table tbody').append(newRow);
+    }
+
+    function removeMessage(messageId) {
+      $('#message_' + messageId).remove();
+      // Update the Sl. No. column after deletion
+      $('#messages_table tbody tr').each(function(index) {
+        $(this).find('td:first').text(index + 1);
+      });
     }
   });
 </script>
-
