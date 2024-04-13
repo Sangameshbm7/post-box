@@ -1,15 +1,20 @@
 <img src="<%= image_path('POSTBOX.png') %>" alt="Your Image Description" width="100%" height="30%">
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
 <% if current_user %>
-<h3>Welcome <%= current_user.username %></h3>
+<h3>Welcome <%= current_user.email %></h3>
 <% end %>
-<ul>
-  <li><%= link_to "My Dashboard", root_path, class: "nav-link" %></li> 
-  <li><a href='#settings'>FAQ's</a></li>
-  <% if current_user %>
-    <li><a href='#settings'>Submit a Ticket</a></li>
-  <% end %>
-  <li><%= link_to "Sign Out", destroy_user_session_path, 'data-turbo-method': :delete, class: "nav-link"%></li>
-</ul>
+<div>
+  <ul>
+    <li><%= link_to "Messages Dashboard", root_path, class: "nav-link" %></li>
+    <li><%= link_to "Post Message", new_message_path, class: "nav-link" %></li>
+    <li><%= link_to "Friends", root_path, class: "nav-link" %></li> 
+    <% if current_user %>
+      <li><a href='#settings'>Submit a Ticket</a></li>
+    <% end %>
+    <li><%= link_to "Sign Out", destroy_user_session_path, 'data-turbo-method': :delete, class: "nav-link"%></li>
+  </ul>
+</div>
 
 <style>
 ul {
@@ -32,7 +37,7 @@ li a:hover, .nav-link:hover {
   color: white;
 }
 
-h3 {
+h3,p {
   text-align: center;
 }
 </style>

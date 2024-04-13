@@ -21,7 +21,7 @@ class MessagesController < ApplicationController
 
   # POST /messages or /messages.json
   def create
-    @message = current_user.messages.build(message_params)
+    @message = current_user.messages.new(message_params)
     if @message.save
       redirect_to messages_path, notice: 'Message was successfully created.'
     else

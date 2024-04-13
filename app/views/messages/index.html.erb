@@ -1,16 +1,78 @@
 <p style="color: green"><%= notice %></p>
+<h1>Post a Message</h1>
+<textarea id="message_content" placeholder="Type your message here..." rows="4"></textarea>
+<button id="post_message_button">Post Message</button>
 
-<h1>Messages</h1>
+<h1>My Messages</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Sl. No.</th>
+      <th>Content</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @messages.each_with_index do |message, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= message.content %></td>
+        <td><%= link_to "Show this message", message, class: "show-button" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-<div id="messages">
-  <% @messages.each do |message| %>
-    <%= render message %>
-    <p>
-      <%= link_to "Show this message", message %>
-    </p>
-  <% end %>
-</div>
+<style type="text/css">
+  h1{
+    text-align: center;
+  }
+  .message {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+  }
 
-<%= link_to "New message", new_message_path %>
+  .show-link {
+    margin-left: 10px; /* Add some spacing between the message and the link */
+  }
+</style>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#post_message_button').click(function() {
+      $.ajax({
+        url: '/messages',
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: { message: { content: $('#message_content').val() } },
+        dataType: 'json', // Expect JSON response
+        success: function(response) {
+          // Handle the successful response
+          console.log(response);
+          // Append the new message to the table
+          appendMessage(response);
+        },
+        error: function(xhr, status, error) {
+          // Handle errors
+          console.error(xhr.responseText);
+        }
+      });
+    });
+
+    // Function to append new message to the table
+    function appendMessage(message) {
+      // Construct table row HTML for the new message
+      var newRow = '<tr>' +
+                   '<td>' + ($('table tbody tr').length + 1) + '</td>' +
+                   '<td>' + message.content + '</td>' +
+                   '<td><a href="/messages/' + message.id + '" class="show-button">Show this message</a></td>' +
+                   '</tr>';
+      
+      // Append the new row to the table body
+      $('table tbody').append(newRow);
+    }
+  });
+</script>
 
