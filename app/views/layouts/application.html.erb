@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PostBox</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Post Box</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <!-- Include Bootstrap CSS -->
-    <%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/bootstrap/5.3.2/css/bootstrap.min.css' %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' %>
+
+    <style>
+      #left-menu {
+        width: 20%;
+        float: left;
+        margin-right: 20px;
+        background-color: #f1f1f1;
+        height: 950px;
+      }
+
+      #work-area {
+        width: 60%;
+        float: left;
+        height: 950px;
+      }
+    </style>
   </head>
 
-  <body>
+  <body style="background-color:white; ">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <% if user_signed_in? %>
+      <div id="left-menu">
+        <%= render 'shared/menu' %>
+      </div>
+    <% end %>
+    <div id="work-area">
+      <%= yield %>
+    </div>
   </body>
 </html>
