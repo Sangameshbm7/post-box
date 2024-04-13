@@ -21,6 +21,8 @@ gem "puma", "~> 5.0"
 gem "importmap-rails"
 gem 'devise'
 gem 'sassc-rails'
+gem 'jquery-rails'
+
 
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
