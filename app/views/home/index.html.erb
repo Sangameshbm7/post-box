@@ -1,0 +1,19 @@
+<h1>Messages Dashboard</h1>
+<table id="messages_table">
+  <thead>
+    <tr>
+      <th>Sl. No.</th>
+      <th>User Name</th>
+      <th>Content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% all_messages.each_with_index do |message, index| %>
+      <tr id="message_<%= message.id %>">
+        <td><%= index + 1 %></td>
+        <td><%= User.find(message.user_id).user_name %></td>
+        <td><%= message.content %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
