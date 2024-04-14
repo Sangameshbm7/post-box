@@ -1,19 +1,50 @@
-<h1>Messages Dashboard</h1>
-<table id="messages_table">
-  <thead>
-    <tr>
-      <th>Sl. No.</th>
-      <th>User Name</th>
-      <th>Content</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% all_messages.each_with_index do |message, index| %>
+
+
+  <title>Messages Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+    }
+    #messages_table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    #messages_table th, #messages_table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    #messages_table th {
+      background-color: #f2f2f2;
+    }
+    #messages_table tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+
+  <h1>Messages Dashboard</h1>
+  <table id="messages_table">
+    <thead>
+      <tr>
+        <th>Sl. No.</th>
+        <th>User Name</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% all_messages.each_with_index do |message, index| %>
       <tr id="message_<%= message.id %>">
         <td><%= index + 1 %></td>
         <td><%= User.find(message.user_id).user_name %></td>
         <td><%= message.content %></td>
       </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+
