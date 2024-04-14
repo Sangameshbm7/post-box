@@ -6,12 +6,8 @@
 <% end %>
 <div>
   <ul>
-    <li><%= link_to "Messages Dashboard", root_path, class: "nav-link" %></li>
+    <li><%= link_to "Users Message Dashboard", root_path, class: "nav-link" %></li>
     <li><%= link_to "Post Message", messages_path, class: "nav-link" %></li>
-    <li><%= link_to "Friends", root_path, class: "nav-link" %></li> 
-    <% if current_user %>
-      <li><a href='#settings'>Submit a Ticket</a></li>
-    <% end %>
     <li><%= link_to "Sign Out", destroy_user_session_path, 'data-turbo-method': :delete, class: "nav-link"%></li>
   </ul>
 </div>
