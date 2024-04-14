@@ -33,14 +33,16 @@ class MessagesController < ApplicationController
     end
   end
 
-
-  # PATCH/PUT /messages/1 or /messages/1.json
   def update
     @message = current_user.messages.find(params[:id])
-    if @message.update(message_params)
-      redirect_to messages_path, notice: 'Message was successfully updated.'
-    else
-      render :edit
+    respond_to do |format|
+      if @message.update(message_params)
+        format.html { redirect_to messages_path, notice: 'Message was successfully created.' }
+        format.json { render :show, status: :created, location: @message }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @message.errors, status: :unprocessable_entity }
+      end
     end
   end
 
